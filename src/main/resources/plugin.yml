@@ -1,4 +1,5 @@
-name: MaSuiteChatBridge
+name: DolphinBucket
 main: fi.matiaspaavilainen.dolphinbucket.DolphinBucket
 version: 0.1
 author: Masagameplay
+api-version: 1.13
