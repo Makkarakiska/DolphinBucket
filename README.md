@@ -15,3 +15,6 @@ caught: "&aDolphin caught!"
 released: "&aDolphin released!"
 bucket-name: "&7Bucket of &9Dolphin" #Bucket's name when there is a dolphin
 ```
+
+### Showcase
+![Showcase gif](https://i.imgur.com/WT1PqWL.gif)
