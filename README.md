@@ -1,5 +1,5 @@
 # DolphinBucket
-With DolphinBucket players can move dolphins with buckets like any other fish.
+With DolphinBucket players can move dolphins with buckets like any fish.
 
 ### Installation
 * Shut down the server
