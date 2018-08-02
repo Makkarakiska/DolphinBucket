@@ -1,6 +1,6 @@
 messages: true
 caught: "&a%mob% caught!"
-released: "&a%mob% released!"
+released: "&c%mob% released!"
 bucket-name:
   dolphin: "&7Bucket of &9Dolphin"
   guardian: "&7Bucket of &aGuardian"
