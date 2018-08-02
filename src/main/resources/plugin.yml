@@ -1,5 +1,5 @@
-name: DolphinBucket
-main: fi.matiaspaavilainen.dolphinbucket.DolphinBucket
-version: 0.1
+name: MobBucket
+main: fi.matiaspaavilainen.mobbucket.MobBucket
+version: 0.3
 author: Masagameplay
 api-version: 1.13
