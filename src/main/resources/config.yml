@@ -1,4 +1,10 @@
 messages: true
-caught: "&aDolphin caught!"
-released: "&aDolphin released!"
-bucket-name: "&7Bucket of &9Dolphin"
+caught: "&a%mob% caught!"
+released: "&a%mob% released!"
+bucket-name:
+  dolphin: "&7Bucket of &9Dolphin"
+  guardian: "&7Bucket of &aGuardian"
+  elder-guardian: "&7Bucket of &dElder Guardian"
+  squid: "&7Bucket of &0Squid"
+  turtle: "&7Bucket of &2Turtle"
+  magma-cube: "&7Bucket of &6Magma Cube"

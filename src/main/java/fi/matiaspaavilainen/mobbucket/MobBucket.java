@@ -4,9 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Dolphin;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -36,24 +34,29 @@ public class DolphinBucket extends JavaPlugin implements Listener {
     public void onClick(PlayerInteractAtEntityEvent e) {
         Player p = e.getPlayer();
         // If the item is bucket and the target is Dolphin
+        checkEntity(p.getInventory().getItemInMainHand(), e.getRightClicked());
         if (p.getInventory().getItemInMainHand().equals(new ItemStack(Material.WATER_BUCKET)) && e.getRightClicked() instanceof Dolphin) {
-
             // Remove the dolphin
             Dolphin dolphin = (Dolphin) e.getRightClicked();
             dolphin.remove();
 
             // Create hidden meta tag, so we know the bucket is used.
-            createBucket(p.getInventory().getItemInMainHand());
+
+            createBucket(p.getInventory().getItemInMainHand(), e.getRightClicked().getName());
 
             // Sends message
-            sendMessage(p, getConfig().getString("caught"));
+            sendMessage(p, getConfig().getString("caught").replace("%entity%", e.getRightClicked().getName()));
 
             //Prevent for respawning
             cooldown.put(p.getUniqueId(), System.currentTimeMillis() + 200);
         }
-    }
+        if (p.getInventory().getItemInMainHand().equals(createBucket(new ItemStack(Material.WATER_BUCKET), e.getRightClicked().getName()))) {
+            if (!cooldown.containsKey(p.getUniqueId()) || (cooldown.containsKey(p.getUniqueId()) && cooldown.get(p.getUniqueId()) < System.currentTimeMillis())) {
 
-    @EventHandler
+            }
+        }
+    }
+    /*@EventHandler
     public void emptyBucket(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -71,7 +74,7 @@ public class DolphinBucket extends JavaPlugin implements Listener {
                         ItemStack bucket = p.getInventory().getItemInMainHand();
 
                         // If item is similar than bucket with hidden item meta
-                        if (bucket.equals(createBucket(new ItemStack(Material.WATER_BUCKET)))) {
+                        if (bucket.equals(createBucket(new ItemStack(Material.WATER_BUCKET), e.tar))) {
                             ItemMeta meta = bucket.getItemMeta();
                             List<String> dolphinLore = meta.getLore();
 
@@ -88,10 +91,7 @@ public class DolphinBucket extends JavaPlugin implements Listener {
                                     p.getWorld().spawnEntity(loc, EntityType.DOLPHIN);
 
                                     // Reset bucket data to default
-                                    List<String> lore = new ArrayList<>();
-                                    meta.setDisplayName(null);
-                                    meta.setLore(lore);
-                                    bucket.setItemMeta(meta);
+
 
                                     // Sends message
                                     sendMessage(p, getConfig().getString("released"));
@@ -103,26 +103,84 @@ public class DolphinBucket extends JavaPlugin implements Listener {
                 }
             }
         }
-    }
+    }*/
 
-    // Cleaner code
-    private void sendMessage(Player p, String msg) {
-        if (getConfig().getBoolean("messages")) {
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+        // Cleaner code
+        private void sendMessage (Player p, String msg){
+            if (getConfig().getBoolean("messages")) {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+            }
         }
+
+
+        private boolean checkBucket (List < String > lore, Entity entity){
+
+
+            // Check if the bucket has hidden item meta
+            if (lore != null && lore.size() > 0 && HiddenStringUtils.hasHiddenString(lore.get(0))) {
+                // If hidden meta equals mob's name
+                return lore.get(0).equalsIgnoreCase(entity.getName());
+            }
+            return false;
+        }
+
+        private void checkEntity (ItemStack bucket, Entity entity){
+            switch (entity.getName()) {
+                case ("Dolphin"):
+                    controlBucket(bucket, entity);
+                    System.out.println(entity.getName());
+                    break;
+                case ("Squid"):
+                    System.out.println(entity.getName());
+                    break;
+                case ("Turtle"):
+                    System.out.println(entity.getName());
+                    break;
+                case ("Elder Guardian"):
+                    System.out.println(entity.getName());
+                    break;
+                case ("Guardian"):
+                    System.out.println(entity.getName());
+                    break;
+                case ("Magma Cube"):
+                    System.out.println(entity.getName());
+                    break;
+            }
+        }
+
+
+        private ItemStack createBucket (ItemStack bucket, String mob){
+            List<String> lore = new ArrayList<>();
+            lore.add(HiddenStringUtils.encodeString(mob));
+
+            // And set the meta back to bucket
+            ItemMeta meta = bucket.getItemMeta();
+            meta.setLore(lore);
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bucket-name." + mob)));
+            bucket.setItemMeta(meta);
+            return bucket;
+        }
+
+        // Cleaner code
+        private ItemStack controlBucket (ItemStack bucket, Entity entity){
+            ItemMeta meta = bucket.getItemMeta();
+            List<String> lore = meta.getLore();
+
+            if (checkBucket(lore, entity)) {
+                lore = new ArrayList<>();
+                meta.setDisplayName(null);
+            } else {
+                entity.remove();
+                lore = new ArrayList<>();
+                lore.add(HiddenStringUtils.encodeString(entity.getName().toLowerCase()));
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bucket-name." + entity.getName().toLowerCase())));
+            }
+
+            // And set the meta back to bucket
+            meta.setLore(lore);
+
+            bucket.setItemMeta(meta);
+            return bucket;
+        }
+
     }
-
-
-    // Cleaner code
-    private ItemStack createBucket(ItemStack bucket) {
-        List<String> lore = new ArrayList<>();
-        lore.add(HiddenStringUtils.encodeString("dolphin"));
-
-        // And set the meta back to bucket
-        ItemMeta meta = bucket.getItemMeta();
-        meta.setLore(lore);
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bucket-name")));
-        bucket.setItemMeta(meta);
-        return bucket;
-    }
-}
