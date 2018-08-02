@@ -1,4 +1,4 @@
-package fi.matiaspaavilainen.dolphinbucket;
+package fi.matiaspaavilainen.mobbucket;
 
 import org.bukkit.ChatColor;
 

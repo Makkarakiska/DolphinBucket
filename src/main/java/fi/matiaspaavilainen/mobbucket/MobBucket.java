@@ -1,15 +1,11 @@
-package fi.matiaspaavilainen.dolphinbucket;
+package fi.matiaspaavilainen.mobbucket;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class DolphinBucket extends JavaPlugin implements Listener {
+public class MobBucket extends JavaPlugin implements Listener {
 
     private HashMap<UUID, Long> cooldown = new HashMap<>();
 
